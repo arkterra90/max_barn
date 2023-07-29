@@ -16,6 +16,17 @@ def about(request):
 def process(request):
     return render(request, "web/process.html")
 
+def user_admin(request):
+    return render(request, "web/user_admin.html")
+
+def admin_contacts(request):
+    contacts = Customer.objects.all()
+    print(contacts)
+
+    return render(request, "web/admin_contacts.html", {
+        "contacts": contacts
+    })
+
 def new_cust(request):
     if request.method == "POST":
         f = CustomerForm(request.POST)
@@ -24,6 +35,12 @@ def new_cust(request):
             return render(request, "web/contact.html", {
                 "message": "Thank you for submitting your contact information! A representative will contact you soon.",
                 "CustomerForm": CustomerForm
+            })
+        else:
+            print(f.errors)
+            return render(request, "web/contact.html", {
+            "CustomerForm": CustomerForm,
+            "message": "Your information was not saved. Please try again."
             })
     else:
         return render(request, "web/contact.html", {

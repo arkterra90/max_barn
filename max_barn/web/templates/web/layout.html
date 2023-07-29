@@ -68,6 +68,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'login' %}">Client Login</a>
                         </li>
+                        {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'user_admin' %}">Admin</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

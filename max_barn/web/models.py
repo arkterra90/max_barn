@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 
 STATE_CHOICES = (
@@ -46,12 +47,14 @@ class Customer(models.Model):
     name_last = models.CharField(max_length=64, verbose_name="Last Name")
     address = models.CharField(max_length=200)
     add_city = models.CharField(max_length=64, verbose_name="City")
-    add_state = models.CharField(max_length=2, choices=STATE_CHOICES, unique=True, verbose_name="State")
+    add_state = models.CharField(max_length=2, choices=STATE_CHOICES, verbose_name="State")
     phone_number = models.CharField(max_length=16, verbose_name="Phone Number")
     email = models.EmailField()
+    date = models.DateTimeField(default=timezone.now)
+    notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name_first} {self.name_last} {self.address} {self.add_city} {self.add_state} {self.phone_number} {self.email}"
+        return f"{self.name_first} {self.name_last} {self.address} {self.add_city} {self.add_state} {self.phone_number} {self.email} {self.date}"
     
 
 class Building(models.Model):
@@ -66,14 +69,24 @@ class Building(models.Model):
     porch_concrete = models.BooleanField(default=False)
     porch_length = models.IntegerField(verbose_name="Porch Length", null=True, blank=True)
     porch_width = models.IntegerField(verbose_name="Porch Width", null=True, blank=True)
-    windows = models.IntegerField(null=True, blank=True)
-    walk_doors = models.IntegerField(null=True, blank=True)
-    over_head_doors = models.IntegerField(null=True, blank=True)
-    over_head_height = models.IntegerField(null=True, blank=True)
-    over_head_width = models.IntegerField(null=True, blank=True)
-    notes = models.TextField(null=True, blank=True)
+    windows = models.IntegerField(null=True, blank=True, verbose_name="Quantity of Windows")
+    walk_doors = models.IntegerField(null=True, blank=True, verbose_name="Quantity of Walkin Doors")
+    over_head_doors = models.IntegerField(null=True, blank=True, verbose_name="Quantity of Over Head Doors")
+    over_head_height = models.IntegerField(null=True, blank=True, verbose_name="Over Head Door Height")
+    over_head_width = models.IntegerField(null=True, blank=True, verbose_name="Over Head Door Width")
     plumbing = models.BooleanField(default=False)
+    cust_use = models.TextField(null=True, blank=True, verbose_name="Customer Use Case:")
+    notes = models.TextField(null=True, blank=True)
+    
 
     def __str__(self):
-        return f"{self.cust.name_first} {self.cust.name_last} | {self.width}x{self.length}x{self.height} | Concrete: {'Yes' if self.concrete else 'No'} | Color: {self.color} | Trim: {self.trim} | Porch: {'Yes' if self.porch else 'No'} | Porch Concrete: {'Yes' if self.porch_concrete else 'No'} | Porch Size: {self.porch_length}x{self.porch_width} | Windows: {self.windows} | Walk Doors: {self.walk_doors} | Overhead Doors: {self.over_head_doors} | Overhead Size: {self.over_head_height}x{self.over_head_width} | Plumbing: {'Yes' if self.plumbing else 'No'}"
+        return f"{self.cust} {self.width} {self.length} {self.height} {self.concrete} {self.color} {self.trim} {self.porch} {self.porch_concrete} {self.porch_length} {self.porch_width} {self.windows} {self.walk_doors} {self.over_head_doors} {self.over_head_height} {self.over_head_width} {self.plumbing} {self.cust_use} {self.notes}"
 
+class Payment(models.Model):
+    project = models.ForeignKey(Building, on_delete=models.CASCADE)
+    first_pay = models.BooleanField(default=False, blank=True, null=True)
+    first_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    first_date = models.DateTimeField()
+    final_pay = models.BooleanField(default=False, blank=True, null=True)
+    final_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)

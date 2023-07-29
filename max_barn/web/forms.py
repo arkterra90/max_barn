@@ -4,7 +4,7 @@ from .models import *
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
-        fields = "__all__"
+        exclude = ['date', 'notes']
 
 class BuildingForm(ModelForm):
     class Meta:
