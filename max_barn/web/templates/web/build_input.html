@@ -1,0 +1,15 @@
+{% extends "web/layout.html" %} 
+
+{% block content %} 
+{% if message %} 
+<p>{{ message }}</p>
+{% endif %}
+
+<form action="{% url 'build_input' %}" method="post">
+    {% csrf_token %}
+    {{ BuildingForm.as_p }}
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+
+{% endblock %}

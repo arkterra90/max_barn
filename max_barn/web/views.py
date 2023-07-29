@@ -37,6 +37,20 @@ def project_list(request):
         "project": project
     })
 
+def build_input(request):
+    if request.method == "POST":
+        f = BuildingForm(request.POST)
+        if f.is_valid():
+            instance = f.save()
+            return render(request, "web/build_input.html", {
+                "message": "Saved",
+                "BuildingForm": BuildingForm
+            })
+    else:
+        return render(request, "web/build_input.html", {
+            "BuildingForm": BuildingForm
+        })
+
 def login_view(request):
     if request.method == "POST":
 
