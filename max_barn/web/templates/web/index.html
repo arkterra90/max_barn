@@ -1,0 +1,18 @@
+{% extends "web/layout.html" %}
+{% load static %}
+
+{% block content %} 
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Welcome to Maxwell Barn Company!</h1>
+                <p>We build high-quality pole barns for various needs. Our team of experts is dedicated to delivering top-notch barns that meet your requirements.</p>
+                <p>Check out our Facebook page for the latest updates and projects. Stay informed about our ongoing and completed projects.</p>
+                <p>Contact us to get started on your next pole barn project! We are excited to collaborate with you.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'images/barn.jpg' %}" alt="pole barn exterior" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+{% endblock %}
