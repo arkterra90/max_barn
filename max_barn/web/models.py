@@ -10,19 +10,31 @@ STATE_CHOICES = (
 )
 
 COLOR_CHOICES = [
-        ('White', 'White'),
-        ('Black', 'Black'),
-        ('Light Gray', 'Light Gray'),
-        ('Gray', 'Gray'),
-        ('Dark Gray', 'Dark Gray'),
-        ('Red', 'Red'),
-        ('Maroon', 'Maroon'),
-        ('Yellow', 'Yellow'),
-        ('Green', 'Green'),
-        ('Blue', 'Blue'),
-        ('Purple', 'Purple'),
-        ('Pink', 'Pink'),
-    ]
+    ('Black', 'Black STANDARD | PRIME | ULTRA'),
+    ('Charcoal', 'Charcoal STANDARD | PRIME | ULTRA'),
+    ('Pewter', 'Pewter PRIME'),
+    ('Gray', 'Gray STANDARD | PRIME | ULTRA'),
+    ('Alamo', 'Alamo STANDARD | PRIME | ULTRA'),
+    ('Brilliant', 'Brilliant STANDARD | PRIME | ULTRA'),
+    ('Forest', 'Forest STANDARD | PRIME | ULTRA'),
+    ('Hunter', 'Hunter STANDARD | PRIME | ULTRA'),
+    ('Colony', 'Colony PRIME'),
+    ('Crimson', 'Crimson PRIME | ULTRA'),
+    ('Deep Red', 'Deep Red PRIME'),
+    ('Rustic', 'Rustic STANDARD | PRIME | ULTRA'),
+    ('Burgundy', 'Burgundy STANDARD | PRIME | ULTRA'),
+    ('Gallery', 'Gallery PRIME | ULTRA'),
+    ('Ocean', 'Ocean PRIME | ULTRA'),
+    ('Ivory', 'Ivory PRIME'),
+    ('Light Stone', 'Light Stone STANDARD | PRIME | ULTRA'),
+    ('Desert', 'Desert PRIME'),
+    ('Copper Metallic', 'Copper Metallic*† PRIME'),
+    ('Galvalume', 'Galvalume STANDARD | PRIME | ULTRA'),
+    ('Burnished Slate', 'Burnished Slate STANDARD | PRIME | ULTRA'),
+    ('Brown', 'Brown STANDARD | PRIME | ULTRA'),
+    ('Tan', 'Tan STANDARD | PRIME | ULTRA'),
+    ('Taupe', 'Taupe STANDARD | PRIME | ULTRA'),
+]
 
 BARN_TYPE = [
     ('House', 'House'),
@@ -67,25 +79,31 @@ class Customer(models.Model):
     phone_number = models.CharField(max_length=16, verbose_name="Phone Number")
     email = models.EmailField()
     date = models.DateTimeField(default=timezone.now)
-    notes = models.TextField(blank=True, null=True)
     barn_type = models.CharField(max_length=20, choices=BARN_TYPE, verbose_name="Desired Structure Usuage", null=True, blank=True)
 
 
     def __str__(self):
         return f"{self.name_first} {self.name_last} {self.address} {self.add_city} {self.add_state} {self.phone_number} {self.email} {self.date}"
     
+class CustomerNote(models.Model):
+    cust = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    cust_note = models.TextField(verbose_name="Customer Note")
+    cust_note_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.cust} {self.cust_note} {self.cust_note_date}"
+    
 class Contact(models.Model):
 
     cust = models.ForeignKey(Customer, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=CUST_STATUS)
-    possible_build_date = models.DateTimeField()
+    possible_build_date = models.DateTimeField(blank=True, null=True)
     site_details = models.TextField(verbose_name="Site Details")
-    on_site_appointment = models.DateTimeField()
+    on_site_appointment = models.DateTimeField(blank=True, null=True)
     made_contact = models.BooleanField(default=False)
-    notes = models.TextField()
 
     def __str__(self):
-        return f"{self.cust} {self.status} {self.possible_build_date} {self.site_details} {self.on_site_appointment} {self.notes}"
+        return f"{self.cust} {self.status} {self.possible_build_date} {self.site_details} {self.on_site_appointment}"
     
 
 class Building(models.Model):
@@ -94,7 +112,7 @@ class Building(models.Model):
     length = models.IntegerField()
     height = models.IntegerField()
     concrete = models.BooleanField(default=False)
-    color = models.CharField(max_length=12, choices=COLOR_CHOICES)
+    color = models.CharField(max_length=15, choices=COLOR_CHOICES)
     trim = models.CharField(max_length=20, choices=COLOR_CHOICES)
     porch = models.BooleanField(default=False)
     porch_concrete = models.BooleanField(default=False)
@@ -106,12 +124,19 @@ class Building(models.Model):
     over_head_height = models.IntegerField(null=True, blank=True, verbose_name="Over Head Door Height")
     over_head_width = models.IntegerField(null=True, blank=True, verbose_name="Over Head Door Width")
     plumbing = models.BooleanField(default=False)
-    cust_use = models.TextField(null=True, blank=True, verbose_name="Customer Use Case:")
-    notes = models.TextField(null=True, blank=True)
-    
+    cust_use = models.TextField(null=True, blank=True, verbose_name="Customer Use Case:")    
 
     def __str__(self):
-        return f"{self.cust} {self.width} {self.length} {self.height} {self.concrete} {self.color} {self.trim} {self.porch} {self.porch_concrete} {self.porch_length} {self.porch_width} {self.windows} {self.walk_doors} {self.over_head_doors} {self.over_head_height} {self.over_head_width} {self.plumbing} {self.cust_use} {self.notes}"
+        return f"{self.cust} {self.width} {self.length} {self.height} {self.concrete} {self.color} {self.trim} {self.porch} {self.porch_concrete} {self.porch_length} {self.porch_width} {self.windows} {self.walk_doors} {self.over_head_doors} {self.over_head_height} {self.over_head_width} {self.plumbing} {self.cust_use}"
+
+class BuildingNote(models.Model):
+
+    building = models.ForeignKey(Building, on_delete=models.CASCADE)
+    build_note = models.TextField()
+    build_note_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.building} {self.build_note} {self.build_note_date}"
 
 class Payment(models.Model):
     project = models.ForeignKey(Building, on_delete=models.CASCADE)
@@ -120,4 +145,8 @@ class Payment(models.Model):
     first_date = models.DateTimeField(blank=True, null=True)
     final_pay = models.BooleanField(default=False, blank=True, null=True)
     final_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    final_date = models.DateTimeField(blank=True, null=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.project} {self.first_pay} {self.first_amount} {self.first_date} {self.final_pay} {self.final_amount} {self.final_date} {self.total_amount}"

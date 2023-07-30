@@ -11,7 +11,8 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col">
-      <h2>Customer Contacts:</h2>
+        <a href="{% url 'user_admin' %}" class="btn btn-secondary mb-3">Back To Admin Dashboard</a>
+      <h2>First Time Customer Contacts:</h2>
       <div class="table-responsive">
         <table id="customer-table" class="table table-striped">
           <thead>
@@ -36,7 +37,7 @@
               <td>{{ customer.add_state }}</td>
               <td>{{ customer.phone_number }}</td>
               <td>{{ customer.email }}</td>
-              <td>{{ customer.date|date:"Y-m-d H:i:s" }}</td> <!-- Format date as "YYYY-MM-DD HH:MM:SS" -->
+              <td>{{ customer.date|date:"F d, Y" }}</td>
             </tr>
             {% endfor %}
           </tbody>

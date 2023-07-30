@@ -14,11 +14,38 @@ def about(request):
     return render(request, "web/about.html")
 
 def customer_details(request, cust_id):
-    cust = Customer.objects.filter(pk=cust_id)
-    return render(request, "web/customer_details.html", {
-        "cust": cust,
-        "contact": ContactForm
-    })
+    if request.method == "POST":
+        customer = Customer.objects.get(pk=cust_id)
+        f = ContactForm(request.POST)
+        g = CustomerNoteForm(request.POST)
+        print(f, g)
+        if f.is_valid():
+            instance = f.save(commit=False)
+            instance.cust = customer
+            instance.on_site_appointment = request.POST.get('on_site_appointment')
+            instance.possible_build_date = request.POST.get('possible_build_date')
+            instance.save()
+        if g.is_valid():
+            instance = g.save(commit=False)
+            instance.cust = customer
+            instance.save()
+        cust = Customer.objects.filter(pk=cust_id)
+        return render(request, "web/customer_details.html", {
+            "cust": cust,
+            "contact": ContactForm,
+            "cust_note": CustomerNoteForm
+        })
+        
+    else:
+        cust = Customer.objects.filter(pk=cust_id)
+        return render(request, "web/customer_details.html", {
+            "cust": cust,
+            "contact": ContactForm,
+            "cust_note": CustomerNoteForm
+        })
+
+def customer_profile(request, cust_id):
+    pass
 
 def process(request):
     return render(request, "web/process.html")
@@ -28,7 +55,6 @@ def user_admin(request):
 
 def admin_contacts(request):
     contacts = Customer.objects.all()
-    print(contacts)
 
     return render(request, "web/admin_contacts.html", {
         "contacts": contacts
@@ -44,7 +70,6 @@ def new_cust(request):
                 "CustomerForm": CustomerForm
             })
         else:
-            print(f.errors)
             return render(request, "web/contact.html", {
             "CustomerForm": CustomerForm,
             "message": "Your information was not saved. Please try again."
