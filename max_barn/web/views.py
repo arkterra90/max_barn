@@ -44,8 +44,25 @@ def customer_details(request, cust_id):
             "cust_note": CustomerNoteForm
         })
 
+def customer_list(request):
+    customers = Customer.objects.all()
+
+    return render(request, "web/customer_list.html", {
+        "customers": customers
+    })
+
 def customer_profile(request, cust_id):
-    pass
+    customer = Customer.objects.get(pk=cust_id)
+    notes = CustomerNote.objects.filter(cust=customer)
+    builds = Building.objects.filter(cust=customer)
+    contact = Contact.objects.filter(cust=customer)
+
+    return render(request, "web/customer_profile.html", {
+        "customers": [customer],
+        "notes": notes,
+        "builds": builds,
+        "contacts": contact
+    })
 
 def process(request):
     return render(request, "web/process.html")
@@ -54,7 +71,8 @@ def user_admin(request):
     return render(request, "web/user_admin.html")
 
 def admin_contacts(request):
-    contacts = Customer.objects.all()
+    #contacts = Customer.objects.all()
+    contacts = Customer.objects.exclude(contact__isnull=False)
 
     return render(request, "web/admin_contacts.html", {
         "contacts": contacts

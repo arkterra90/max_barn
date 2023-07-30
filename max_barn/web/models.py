@@ -80,6 +80,7 @@ class Customer(models.Model):
     email = models.EmailField()
     date = models.DateTimeField(default=timezone.now)
     barn_type = models.CharField(max_length=20, choices=BARN_TYPE, verbose_name="Desired Structure Usuage", null=True, blank=True)
+    archived = models.BooleanField(default=False)
 
 
     def __str__(self):
