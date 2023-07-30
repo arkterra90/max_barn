@@ -1,0 +1,58 @@
+{% extends "web/layout.html" %}
+
+{% block content %} 
+<!-- ... your existing content ... -->
+
+<head>
+    <!-- Include flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Include flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Your custom CSS and JavaScript if needed -->
+    <!-- ... -->
+</head>
+
+<div class="container mt-4">
+    <a href="{% url 'admin_contacts' %}" class="btn btn-secondary mb-3">Back To Contacts</a>
+    {% for customer in cust %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Name: {{ customer.name_first }} {{ customer.name_last }}</h5>
+            <p class="card-text">Address: {{ customer.address }}<br>{{ customer.add_city }}, {{ customer.add_state }} {{ customer.zip }}</p>
+            <p class="card-text">Phone Number: {{ customer.phone_number }}</p>
+            <p class="card-text">Email: {{ customer.email }}</p>
+            <p class="card-text">Barn Type: {{ customer.barn_type }}</p>
+        </div>
+    </div>
+    {% endfor %} 
+
+    <form>
+        {% csrf_token %}
+        {{ contact.as_p }}
+        <div class="form-group">
+            <label for="id_possible_build_date">Possible Build Date:</label>
+            <input type="text" class="form-control flatpickr" data-enable-time="true" id="id_possible_build_date" name="possible_build_date" value="{{ contact.possible_build_date|date:'Y-m-d H:i' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="id_on_site_appointment">On-Site Appointment:</label>
+            <input type="text" class="form-control flatpickr" data-enable-time="true" id="id_on_site_appointment" name="on_site_appointment" value="{{ contact.on_site_appointment|date:'Y-m-d H:i' }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        flatpickr('.flatpickr', {
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i',
+            // Add any additional options or customization as needed
+        });
+    });
+</script>
+
+{% endblock %}

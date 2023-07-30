@@ -29,7 +29,7 @@
           <tbody>
             {% for customer in contacts %}
             <tr>
-              <td>{{ customer.name_first }}</td>
+              <td><a href="{% url 'customer_details' cust_id=customer.id %}">{{ customer.name_first }}</a></td>
               <td>{{ customer.name_last }}</td>
               <td>{{ customer.address }}</td>
               <td>{{ customer.add_city }}</td>

@@ -13,6 +13,13 @@ def index(request):
 def about(request):
     return render(request, "web/about.html")
 
+def customer_details(request, cust_id):
+    cust = Customer.objects.filter(pk=cust_id)
+    return render(request, "web/customer_details.html", {
+        "cust": cust,
+        "contact": ContactForm
+    })
+
 def process(request):
     return render(request, "web/process.html")
 

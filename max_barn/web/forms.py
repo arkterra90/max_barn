@@ -10,3 +10,8 @@ class BuildingForm(ModelForm):
     class Meta:
         model = Building
         fields = "__all__"
+
+class ContactForm(ModelForm):
+    class Meta:
+        model = Contact
+        exclude = ['cust', 'possible_build_date', 'on_site_appointment']

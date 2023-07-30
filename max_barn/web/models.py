@@ -24,6 +24,21 @@ COLOR_CHOICES = [
         ('Pink', 'Pink'),
     ]
 
+BARN_TYPE = [
+    ('House', 'House'),
+    ('Personal Shop', 'Personal Shop'),
+    ('Barn', 'Barn'),
+    ('Shed', 'Shed'),
+    ('Commercial Building', 'Commercial Building'),
+    ('Garage', 'Garage')
+]
+
+CUST_STATUS = [
+    ('Price Shopping', 'Price Shopping'),
+    ('Ready To Build', 'Ready To Build'),
+    ('Future Build', 'Future Build')
+]
+
 class User(AbstractUser):
     groups = models.ManyToManyField(
         'auth.Group',
@@ -48,13 +63,29 @@ class Customer(models.Model):
     address = models.CharField(max_length=200)
     add_city = models.CharField(max_length=64, verbose_name="City")
     add_state = models.CharField(max_length=2, choices=STATE_CHOICES, verbose_name="State")
+    zip = models.CharField(max_length=12, null=True, blank=True)
     phone_number = models.CharField(max_length=16, verbose_name="Phone Number")
     email = models.EmailField()
     date = models.DateTimeField(default=timezone.now)
     notes = models.TextField(blank=True, null=True)
+    barn_type = models.CharField(max_length=20, choices=BARN_TYPE, verbose_name="Desired Structure Usuage", null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.name_first} {self.name_last} {self.address} {self.add_city} {self.add_state} {self.phone_number} {self.email} {self.date}"
+    
+class Contact(models.Model):
+
+    cust = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=CUST_STATUS)
+    possible_build_date = models.DateTimeField()
+    site_details = models.TextField(verbose_name="Site Details")
+    on_site_appointment = models.DateTimeField()
+    made_contact = models.BooleanField(default=False)
+    notes = models.TextField()
+
+    def __str__(self):
+        return f"{self.cust} {self.status} {self.possible_build_date} {self.site_details} {self.on_site_appointment} {self.notes}"
     
 
 class Building(models.Model):
@@ -86,7 +117,7 @@ class Payment(models.Model):
     project = models.ForeignKey(Building, on_delete=models.CASCADE)
     first_pay = models.BooleanField(default=False, blank=True, null=True)
     first_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    first_date = models.DateTimeField()
+    first_date = models.DateTimeField(blank=True, null=True)
     final_pay = models.BooleanField(default=False, blank=True, null=True)
     final_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
