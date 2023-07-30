@@ -11,10 +11,9 @@
     <style>
         /* Custom CSS for the color scheme */
         body {
-            background-color: #E0E0CE;
+            background-color: #FFFFFF;
             color: #474747;
             font-family: Arial, sans-serif;
-
         }
 
         header {
@@ -33,8 +32,36 @@
             color: #FFFFFF;
         }
 
-        main {
-            padding: 20px 0;
+        .hero-section {
+            background-image: url("{% static 'images/hero-bg.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .about-section {
+            background-color: #F7F7F7;
+            padding: 60px 0;
+        }
+
+        .services-section {
+            padding: 60px 0;
+        }
+
+        .testimonials-section {
+            background-color: #F7F7F7;
+            padding: 60px 0;
+        }
+
+        .contact-section {
+            padding: 60px 0;
         }
 
         footer {
@@ -80,10 +107,10 @@
             </div>
         </nav>
     </header>
-    
-    <main class="container mt-4">
+
+    <main>
         {% block content %}
-        
+       
         {% endblock %}
     </main>
 
