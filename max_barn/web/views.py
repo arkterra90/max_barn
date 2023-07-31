@@ -6,13 +6,15 @@ from django.contrib.auth.decorators import login_required
 
 from . forms import *
 
-# Create your views here.
+# Renders home page.
 def index(request):
     return render(request, "web/index.html")
 
+# Renders about page.
 def about(request):
     return render(request, "web/about.html")
 
+# Renders customer details page in first contact admin workflow.
 def customer_details(request, cust_id):
     if request.method == "POST":
         customer = Customer.objects.get(pk=cust_id)
@@ -44,6 +46,7 @@ def customer_details(request, cust_id):
             "cust_note": CustomerNoteForm
         })
 
+# Returns page for entire active customer list.
 def customer_list(request):
     customers = Customer.objects.all()
 
@@ -64,20 +67,24 @@ def customer_profile(request, cust_id):
         "contacts": contact
     })
 
+# Renders building process explanation page.
 def process(request):
     return render(request, "web/process.html")
 
+# Renders admin page with links to business processes.
 def user_admin(request):
     return render(request, "web/user_admin.html")
 
+# Renders a page with table of all potential customers who have not had
+# a successful first contact.
 def admin_contacts(request):
-    #contacts = Customer.objects.all()
     contacts = Customer.objects.exclude(contact__isnull=False)
 
     return render(request, "web/admin_contacts.html", {
         "contacts": contacts
     })
 
+# Renders customer contact form.
 def new_cust(request):
     if request.method == "POST":
         f = CustomerForm(request.POST)
@@ -97,6 +104,7 @@ def new_cust(request):
             "CustomerForm": CustomerForm
         })
     
+# Currently not functional
 def project_list(request):
     user_project = request.user.project
     project = Item.objects.filter(building=user_project)
@@ -104,6 +112,7 @@ def project_list(request):
         "project": project
     })
 
+# Renders building input form for admin use.
 def build_input(request):
     if request.method == "POST":
         f = BuildingForm(request.POST)
