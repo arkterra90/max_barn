@@ -26,9 +26,21 @@
                 <div class="card-body">
                     <p class="card-text">{{ note.cust_note }}</p>
                     <p class="card-text">{{ note.cust_note_date }}</p>
+                    <p>{{ note.id }}</p>
                 </div>
             </div>
             {% endfor %}
+            <div>
+                <form action="{% url 'note_add' %}" method="post">
+                    {% csrf_token %} 
+
+                    {{ customernoteform.as_p}}
+                    {% for customer in customers %}
+                    <input type="hidden" value="{{ customer.id }}" name="cust_id">
+                    {% endfor %}
+                    <button type="input" name="note_save">Save Note</button>
+                </form>
+            </div>
         </div>
 
         <div class="col-md-6">
