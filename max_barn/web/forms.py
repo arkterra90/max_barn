@@ -4,7 +4,7 @@ from .models import *
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
-        exclude = ['date', 'notes']
+        exclude = ['date', 'notes', 'archived']
 
 class BuildingForm(ModelForm):
     class Meta:
