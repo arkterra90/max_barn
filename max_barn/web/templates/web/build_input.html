@@ -4,6 +4,7 @@
 {% if message %} 
 <p>{{ message }}</p>
 {% endif %}
+<a href="{% url 'user_admin' %}" class="btn btn-secondary mb-3">Back To Admin Dashboard</a>
 
 <form action="{% url 'build_input' %}" method="post">
     {% csrf_token %}
