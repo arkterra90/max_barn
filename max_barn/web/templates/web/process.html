@@ -1,68 +1,10 @@
-{% extends "web/layout.html" %}
+{% extends "web/djangourllayout.html" %}
 {% load static %}
 
 {% block content %} 
 
-<div id="home-view">
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-md-6">
-                <h1>Welcome to Maxwell Barn Company!</h1>
-                <p>We build high-quality pole barns for various needs. Our team of experts is dedicated to delivering top-notch barns that meet your requirements.</p>
-                <p>Check out our <a href="https://www.facebook.com/maxwellbarncompany/" target="_blank">Facebook</a> page for the latest updates and projects. Stay informed about our ongoing and completed projects.</p>
-                <p>Contact us to get started on your next pole barn project! We are excited to collaborate with you.</p>
-                <div class="d-flex justify-content-center">
-                    <button class="btn" id="quote" style="background-color: #474747; color: white;">Request a Quote</button>
-                </div>
-                
-                </div>
-            <div class="col-md-6">
-                <img src="{% static 'images/barn.jpg' %}" alt="pole barn exterior" class="img-fluid rounded">
-            </div>
-        </div>
-    </div>
 
-
-        <!-- Customer Reviews Section -->
-    <div class="container mt-4">
-        <h2>Customer Reviews</h2>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <img src="{% static 'images/powell_barn.jpg' %}" class="card-img-top" alt="Customer 1">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Megan Powell</h5>
-                        <p class="card-text">"Thank you for your fantastic work! You were a pleasure to work with and we are sending you some referrals."</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <img src="{% static 'images/lee_barn.jpg' %}" class="card-img-top" alt="Customer 2">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Patrick Lee</h5>
-                        <p class="card-text">"Thank you Jeff, Dennis and your crews! Extremely great people to work with and the craftsmanship is excellent, thank you!"</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100">
-                    <img src="{% static 'images/jerry_barn.jpg' %}" class="card-img-top" alt="Customer 3">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">Jerry</h5>
-                        <p class="card-text">"I want to say thank you for building our new shop. Y'all made the whole process almost painless and it looks great. All of your team members were very professional and I would recommend your buildings to anybody needing one. Thanks again."</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="about-view" style="display: none;">
-    <p>About the company details</p>
-</div>
-
-<div id="process-view" style="display: none;">
+<div id="process-view">
 
     <div class="container mt-4">
         <h1 class="mb-3">MAXWELL BARN COMPANY</h1>
@@ -146,29 +88,6 @@
     </div>
 </div>
 
-<div id="contact-view" style="display: none;">
-    {% if message %}
-        <div class="alert alert-success" role="alert">
-            {{ message }}
-        </div>
-    {% endif %}
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <h5 class="mb-4">Initial Contact Form:</h5>
-                <p>Thank you so much for choosing Maxwell Barn Company as your building partner. Please fill out the information below, and a representative from MBC will be in touch with you soon.</p>
-
-                <form action="{% url 'new_cust' %}" method="post">
-                    {% csrf_token %} 
-                    {{ CustomerForm.as_p }}
-
-                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 {% endblock %}
 

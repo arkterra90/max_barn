@@ -12,6 +12,9 @@ def index(request):
         "CustomerForm": CustomerForm,
     })
 
+def about(request):
+    return render(request, "web/about.html")
+
 # Renders a page with table of all potential customers who have not had
 # a successful first contact.
 def admin_contacts(request):
@@ -35,6 +38,11 @@ def build_input(request):
         return render(request, "web/build_input.html", {
             "BuildingForm": BuildingForm
         })
+    
+def contact(request):
+    return render(request, "web/contact.html", {
+        "CustomerForm": CustomerForm,
+    })
 
 # Renders customer details page in first contact admin workflow.
 def customer_details(request, cust_id):
@@ -124,7 +132,10 @@ def note_add(request):
 # Renders admin page with links to business processes.
 def user_admin(request):
     return render(request, "web/user_admin.html")
-    
+
+def process(request):
+    return render(request, "web/process.html")    
+
 # Currently not functional
 def project_list(request):
     user_project = request.user.project
@@ -146,7 +157,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("user_admin"))
         else:
             return render(request, "web/login.html", {
                 "message": "Invalid username and/or password."

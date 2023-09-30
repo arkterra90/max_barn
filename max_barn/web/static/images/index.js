@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#about').addEventListener('click', () => disp_page('about'));
     document.querySelector('#process').addEventListener('click', () => disp_page('process'));
     document.querySelector('#contact').addEventListener('click', () => disp_page('contact'));
+    document.querySelector('#quote').addEventListener('click', () => disp_page('contact'));
+
 
     disp_page('home');
 
