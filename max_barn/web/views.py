@@ -8,11 +8,9 @@ from . forms import *
 
 # Renders home page.
 def index(request):
-    return render(request, "web/index.html")
-
-# Renders about page.
-def about(request):
-    return render(request, "web/about.html")
+    return render(request, "web/index.html", {
+        "CustomerForm": CustomerForm,
+    })
 
 # Renders a page with table of all potential customers who have not had
 # a successful first contact.
@@ -108,7 +106,7 @@ def new_cust(request):
             "message": "Your information was not saved. Please try again."
             })
     else:
-        return render(request, "web/contact.html", {
+        return render(request, "web/index.html", {
             "CustomerForm": CustomerForm
         })
 
@@ -122,11 +120,6 @@ def note_add(request):
         instance.cust = customer
         instance.save()
     return redirect('customer_profile', cust_id=cust_id)
-
-
-# Renders building process explanation page.
-def process(request):
-    return render(request, "web/process.html")
 
 # Renders admin page with links to business processes.
 def user_admin(request):
