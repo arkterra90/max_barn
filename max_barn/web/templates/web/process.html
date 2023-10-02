@@ -1,6 +1,11 @@
-{% extends "web/layout.html" %}
+{% extends "web/djangourllayout.html" %}
+{% load static %}
 
 {% block content %} 
+
+
+<div id="process-view">
+
     <div class="container mt-4">
         <h1 class="mb-3">MAXWELL BARN COMPANY</h1>
         <h4 class="mb-3">Custom Post Framed Buildings</h4>
@@ -81,4 +86,11 @@
         <p>We will offer framing tips if asked.</p>
         <p>Maxwell Barn Company has built a quality reputation one building at a time. Word of mouth from satisfied customers is our only advertising, so please let your friends know about us!</p>
     </div>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'images/index.js' %}"></script>
 {% endblock %}

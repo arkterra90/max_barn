@@ -8,9 +8,10 @@ from . forms import *
 
 # Renders home page.
 def index(request):
-    return render(request, "web/index.html")
+    return render(request, "web/index.html", {
+        "CustomerForm": CustomerForm,
+    })
 
-# Renders about page.
 def about(request):
     return render(request, "web/about.html")
 
@@ -37,6 +38,11 @@ def build_input(request):
         return render(request, "web/build_input.html", {
             "BuildingForm": BuildingForm
         })
+    
+def contact(request):
+    return render(request, "web/contact.html", {
+        "CustomerForm": CustomerForm,
+    })
 
 # Renders customer details page in first contact admin workflow.
 def customer_details(request, cust_id):
@@ -108,7 +114,7 @@ def new_cust(request):
             "message": "Your information was not saved. Please try again."
             })
     else:
-        return render(request, "web/contact.html", {
+        return render(request, "web/index.html", {
             "CustomerForm": CustomerForm
         })
 
@@ -123,15 +129,13 @@ def note_add(request):
         instance.save()
     return redirect('customer_profile', cust_id=cust_id)
 
-
-# Renders building process explanation page.
-def process(request):
-    return render(request, "web/process.html")
-
 # Renders admin page with links to business processes.
 def user_admin(request):
     return render(request, "web/user_admin.html")
-    
+
+def process(request):
+    return render(request, "web/process.html")    
+
 # Currently not functional
 def project_list(request):
     user_project = request.user.project
@@ -153,7 +157,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("user_admin"))
         else:
             return render(request, "web/login.html", {
                 "message": "Invalid username and/or password."

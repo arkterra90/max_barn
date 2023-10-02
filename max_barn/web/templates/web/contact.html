@@ -1,6 +1,11 @@
-{% extends "web/layout.html" %} 
+{% extends "web/djangourllayout.html" %}
+{% load static %}
 
 {% block content %} 
+
+
+
+<div id="contact-view">
     {% if message %}
         <div class="alert alert-success" role="alert">
             {{ message }}
@@ -22,4 +27,10 @@
             </div>
         </div>
     </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'images/index.js' %}"></script>
 {% endblock %}
